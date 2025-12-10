@@ -6,13 +6,22 @@ export class Product {
   ) {}
 
   static reconstitute(props: ProductProps): Product {
+    const normalizedName = props.name?.trim();
+    const normalizedCategory = props.category?.trim();
     const normalizedSubcategories =
       props.subcategories?.map((s) => s.trim()).filter(Boolean) ?? [];
 
-    Product.ensureValid({ ...props, subcategories: normalizedSubcategories });
+    Product.ensureValid({
+      ...props,
+      name: normalizedName,
+      category: normalizedCategory,
+      subcategories: normalizedSubcategories,
+    });
 
     return new Product({
       ...props,
+      name: normalizedName,
+      category: normalizedCategory,
       popularity: props.popularity ?? 0,
       subcategories: normalizedSubcategories,
     });

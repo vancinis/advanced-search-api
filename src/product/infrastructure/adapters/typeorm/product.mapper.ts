@@ -25,18 +25,25 @@ export class ProductMapper {
     return ormEntities.map((entity) => this.toDomain(entity));
   }
 
+  private static mapCommonFields(
+    target: ProductOrmEntity,
+    source: Product,
+  ): void {
+    target.id = source.id;
+    target.name = source.name;
+    target.description = source.description;
+    target.category = source.category;
+    target.subcategories = source.subcategories;
+    target.price = source.price;
+    target.latitude = source.latitude;
+    target.longitude = source.longitude;
+    target.popularity = source.popularity;
+  }
+
   static toOrm(product: Product): ProductOrmEntity {
     const ormEntity = new ProductOrmEntity();
 
-    ormEntity.id = product.id;
-    ormEntity.name = product.name;
-    ormEntity.description = product.description;
-    ormEntity.category = product.category;
-    ormEntity.subcategories = product.subcategories;
-    ormEntity.price = product.price;
-    ormEntity.latitude = product.latitude;
-    ormEntity.longitude = product.longitude;
-    ormEntity.popularity = product.popularity;
+    this.mapCommonFields(ormEntity, product);
 
     if (product.createdAt) ormEntity.createdAt = product.createdAt;
     if (product.updatedAt) ormEntity.updatedAt = product.updatedAt;
@@ -47,15 +54,7 @@ export class ProductMapper {
   static toOrmForCreate(product: Product): ProductOrmEntity {
     const entity = new ProductOrmEntity();
 
-    entity.id = product.id;
-    entity.name = product.name;
-    entity.description = product.description;
-    entity.category = product.category;
-    entity.subcategories = product.subcategories;
-    entity.price = product.price;
-    entity.latitude = product.latitude;
-    entity.longitude = product.longitude;
-    entity.popularity = product.popularity;
+    this.mapCommonFields(entity, product);
 
     return entity;
   }
@@ -64,14 +63,7 @@ export class ProductMapper {
     product: Product,
     existingOrm: ProductOrmEntity,
   ): ProductOrmEntity {
-    existingOrm.name = product.name;
-    existingOrm.description = product.description;
-    existingOrm.category = product.category;
-    existingOrm.subcategories = product.subcategories;
-    existingOrm.price = product.price;
-    existingOrm.latitude = product.latitude;
-    existingOrm.longitude = product.longitude;
-    existingOrm.popularity = product.popularity;
+    this.mapCommonFields(existingOrm, product);
 
     return existingOrm;
   }
