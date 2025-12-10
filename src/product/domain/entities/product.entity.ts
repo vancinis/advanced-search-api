@@ -1,9 +1,40 @@
+import { v4 as uuidv4 } from 'uuid';
 import { ProductProps } from '../contracts/product.props';
+import { InvalidProductException } from '../exceptions/product.exception';
 
 export class Product {
   private constructor(
     private readonly props: ProductProps & { subcategories: string[] },
   ) {}
+
+  static create(
+    props: Omit<ProductProps, 'id' | 'createdAt' | 'updatedAt' | 'popularity'>,
+  ): Product {
+    const now = new Date();
+
+    const normalizedName = props.name?.trim();
+    const normalizedCategory = props.category?.trim();
+    const normalizedSubcategories =
+      props.subcategories?.map((s) => s.trim()).filter(Boolean) ?? [];
+
+    const id = uuidv4();
+
+    if (!normalizedName)
+      throw new InvalidProductException('Product name is required');
+    if (!normalizedCategory)
+      throw new InvalidProductException('Product category is required');
+
+    return new Product({
+      ...props,
+      id: id,
+      name: normalizedName,
+      category: normalizedCategory,
+      subcategories: normalizedSubcategories,
+      popularity: 0,
+      createdAt: now,
+      updatedAt: now,
+    });
+  }
 
   static reconstitute(props: ProductProps): Product {
     const normalizedName = props.name?.trim();
@@ -87,9 +118,10 @@ export class Product {
   private static ensureValid(
     props: ProductProps & { subcategories: string[] },
   ): void {
-    if (!props.id) throw new Error('Product id is required');
-    if (!props.name?.trim()) throw new Error('Product name is required');
+    if (!props.id) throw new InvalidProductException('Product id is required');
+    if (!props.name?.trim())
+      throw new InvalidProductException('Product name is required');
     if (!props.category?.trim())
-      throw new Error('Product category is required');
+      throw new InvalidProductException('Product category is required');
   }
 }
