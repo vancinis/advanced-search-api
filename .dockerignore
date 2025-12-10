@@ -1,0 +1,70 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build output
+dist
+build
+
+# IDE and Editor files
+.idea
+.vscode
+*.swp
+*.swo
+.DS_Store
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.docker
+
+# Environment files (should be mounted or passed as env vars)
+.env
+.env.*
+!.env.example
+
+# Test files
+test
+tests
+coverage
+*.spec.ts
+*.test.ts
+jest.config.js
+jest-e2e.json
+
+# Documentation
+README.md
+REQUIREMENTS.md
+docs
+*.md
+
+# Postman
+postman
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Temporary files
+tmp
+temp
+.tmp
+.temp
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.circleci
+Jenkinsfile
+
+# Misc
+.eslintcache
+.prettierignore
+.editorconfig
+
