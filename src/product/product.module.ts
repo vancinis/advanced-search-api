@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { CACHE_PORT } from './domain/ports/cache.port';
 import { PRODUCT_REPOSITORY_PORT } from './domain/ports/product-repository.port';
 import { PRODUCT_SEARCH_PORT } from './domain/ports/product-search.port';
 
@@ -9,6 +10,7 @@ import { FindProductByIdUseCase } from './application/use-cases/find-product-by-
 import { SearchProductsUseCase } from './application/use-cases/search-products.usecase';
 
 import { ElasticsearchProductAdapter } from './infrastructure/adapters/elasticsearch/elasticsearch-product.adapter';
+import { RedisCacheAdapter } from './infrastructure/adapters/redis/redis-cache.adapter';
 import { ProductOrmEntity } from './infrastructure/adapters/typeorm/product.orm-entity';
 import { TypeOrmProductRepository } from './infrastructure/adapters/typeorm/typeorm-product.repository';
 import { ProductController } from './infrastructure/http/product.controller';
@@ -29,6 +31,10 @@ import { ProductController } from './infrastructure/http/product.controller';
     {
       provide: PRODUCT_REPOSITORY_PORT,
       useClass: TypeOrmProductRepository,
+    },
+    {
+      provide: CACHE_PORT,
+      useClass: RedisCacheAdapter,
     },
   ],
   exports: [PRODUCT_SEARCH_PORT, PRODUCT_REPOSITORY_PORT],

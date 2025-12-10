@@ -171,14 +171,12 @@ export class ElasticsearchProductAdapter
         size: query.limit || 10,
       });
 
-      // Ahora tipado correctamente
-      const suggestions = response.hits.hits.map((hit) => hit._source?.name);
-
-      // Eliminar duplicados
-      const uniqueSuggestions = [...new Set(suggestions)];
+      const suggestions = response.hits.hits
+        .map((hit) => hit._source?.name)
+        .filter((name): name is string => typeof name === 'string');
 
       return {
-        suggestions: uniqueSuggestions as string[],
+        suggestions: [...new Set(suggestions)],
       };
     } catch (error) {
       this.logger.error(`Error in autocomplete: ${error.message}`, error.stack);
