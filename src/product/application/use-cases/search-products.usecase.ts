@@ -22,7 +22,7 @@ export class SearchProductsUseCase {
     const result = await this.productSearchPort.search(query);
 
     return {
-      items: result.items.map(ProductResponseDto.fromDomain),
+      items: result.items.map((item) => ProductResponseDto.fromDomain(item)),
       total: result.total,
       page: result.page,
       limit: result.limit,

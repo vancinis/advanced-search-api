@@ -87,7 +87,7 @@ services:
     restart: unless-stopped
 
   redis:
-    image: redis:7-alpine
+    image: redis:8.4.0-alpine
     container_name: search-redis
     ports:
       - '${REDIS_PORT:-6379}:6379'

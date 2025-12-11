@@ -16,7 +16,7 @@ async function syncElasticsearch() {
     );
     const productSearchPort = app.get<ProductSearchPort>(PRODUCT_SEARCH_PORT);
 
-    // Verificar conexión
+    // Verify connection
     const isConnected = await productSearchPort.checkConnection();
     if (!isConnected) {
       throw new Error('Cannot connect to Elasticsearch');
@@ -26,7 +26,7 @@ async function syncElasticsearch() {
 
     // Obtener todos los productos de la DB
     console.log('📦 Fetching products from database...');
-    const products = await productRepository.findAll(1, 1000);
+    const products = await productRepository.findAll(1, 1000); // For testing purposes, we're only indexing the first 1000 products
 
     if (products.length === 0) {
       console.log('⚠️  No products found in database. Run seed first.');

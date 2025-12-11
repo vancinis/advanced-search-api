@@ -229,7 +229,7 @@ export class ElasticsearchProductAdapter
       agg: estypes.AggregationsAggregate,
     ): FacetBucket[] => {
       if ('buckets' in agg && Array.isArray(agg.buckets)) {
-        return agg.buckets.map((bucket: any) => ({
+        return agg.buckets.map((bucket) => ({
           key: String(bucket.key),
           count: bucket.doc_count || 0,
         }));
@@ -270,7 +270,8 @@ export class ElasticsearchProductAdapter
         },
       });
 
-      return response.suggest?.text_suggestion?.[0]?.options?.[0]?.text;
+      const result = response.suggest?.text_suggestion?.[0]?.options?.[0]?.text;
+      return result;
     } catch (error) {
       this.logger.warn(`Error getting suggested query: ${error.message}`);
       return undefined;

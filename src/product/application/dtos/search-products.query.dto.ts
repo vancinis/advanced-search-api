@@ -15,14 +15,15 @@ import {
   Max,
   Min,
   Validate,
+  ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
 
 @ValidatorConstraint({ name: 'isValidGeoFilter', async: false })
 class IsValidGeoFilter implements ValidatorConstraintInterface {
-  validate(value: any, args: any) {
-    const object = args.object;
+  validate(_value: any, args: ValidationArguments): boolean {
+    const object = args.object as { lat?: number; lon?: number };
     if (object.lat || object.lon) {
       return !!(object.lat && object.lon);
     }

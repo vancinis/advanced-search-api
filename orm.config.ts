@@ -1,7 +1,5 @@
-import { config } from 'dotenv';
+import 'dotenv/config';
 import { DataSource } from 'typeorm';
-
-config();
 
 const isProduction = process.env.NODE_ENV === 'production';
 
