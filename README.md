@@ -9,6 +9,25 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-4169E1?logo=postgresql)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)](https://www.docker.com/)
 
+## 🚀 Live Demo
+
+**Try the API now!** The application is deployed and ready to use:
+
+- **📚 API Documentation (Swagger):** [https://advanced-search-api.onrender.com/api](https://advanced-search-api.onrender.com/api)
+- **🔗 Base API URL:** `https://advanced-search-api.onrender.com`
+
+**Quick Test:**
+
+```bash
+# Search products
+curl "https://advanced-search-api.onrender.com/products?text=laptop&limit=5"
+
+# Autocomplete
+curl "https://advanced-search-api.onrender.com/products/autocomplete?text=lapt"
+```
+
+> **Note:** The first request might take a few seconds as the service spins up from sleep mode (free tier).
+
 ## 📋 Table of Contents
 
 - [Features](#-features)
@@ -122,7 +141,7 @@ This is the fastest and easiest way to run the project.
 
 ```bash
 git clone <repository-url>
-cd advanced-search-system
+cd advanced-search-api
 ```
 
 #### 2. Start all services
@@ -487,7 +506,7 @@ pnpm run format
 ## 📁 Project Structure
 
 ```
-advanced-search-system/
+advanced-search-api/
 ├── src/
 │   ├── product/                    # Products module
 │   │   ├── domain/                 # Domain layer

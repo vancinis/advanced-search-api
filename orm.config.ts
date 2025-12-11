@@ -14,4 +14,5 @@ export default new DataSource({
   migrations: ['src/common/database/migrations/*.ts'],
   migrationsRun: isProduction,
   synchronize: false,
+  ssl: process.env.DB_SSL === 'true',
 });
