@@ -1,0 +1,164 @@
+{
+	"info": {
+		"_postman_id": "3c288cc2-4040-4c1b-b0a2-ddbadd7ed2c1",
+		"name": "Advanced Search API",
+		"description": "API for advanced product search with Elasticsearch, Redis caching, and hexagonal architecture.\n\n## Features\n- Full-text search with relevance ranking\n- Filtering by category, subcategories, location, price range\n- Faceted search with aggregations\n- Autocomplete suggestions with Redis caching\n- Pagination and multiple sorting options\n\n## Base URL\n- Local: http://localhost:3000\n- Docker: http://localhost:3000",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15228159"
+	},
+	"item": [
+		{
+			"name": "Documentation",
+			"item": [
+				{
+					"name": "Swagger UI",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api"
+							]
+						},
+						"description": "Open Swagger UI documentation in your browser."
+					},
+					"response": []
+				}
+			],
+			"description": "API documentation endpoints"
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get Autocomplete suggestions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/autocomplete?text=lapto&limit=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"autocomplete"
+							],
+							"query": [
+								{
+									"key": "text",
+									"value": "lapto"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search products with filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products?text=laptop&page=1&limit=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "text",
+									"value": "laptop"
+								},
+								{
+									"key": "category",
+									"value": "Electronics",
+									"disabled": true
+								},
+								{
+									"key": "minPrice",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "maxPrice",
+									"value": "3000",
+									"disabled": true
+								},
+								{
+									"key": "lat",
+									"value": "40.7128",
+									"disabled": true
+								},
+								{
+									"key": "lon",
+									"value": "-74.006",
+									"disabled": true
+								},
+								{
+									"key": "radiusKm",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "price_desc",
+									"disabled": true
+								},
+								{
+									"key": "subcategories",
+									"value": "cameras,laptops",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/e84fd6c0-37a0-41e0-acfc-24a15f39f247",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"e84fd6c0-37a0-41e0-acfc-24a15f39f247"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}

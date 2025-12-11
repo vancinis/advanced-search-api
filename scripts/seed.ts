@@ -1,8 +1,6 @@
 import { runSeeders } from '@/common/database/seeds';
-import { config } from 'dotenv';
+import 'dotenv/config';
 import dataSource from '../orm.config';
-
-config();
 
 async function seed() {
   try {
