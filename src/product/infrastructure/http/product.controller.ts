@@ -2,6 +2,7 @@ import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AutocompleteQueryDto } from '../../application/dtos/autocomplete.query.dto';
 import { AutocompleteResponseDto } from '../../application/dtos/autocomplete.response.dto';
+import { FindProductByIdParamDto } from '../../application/dtos/find-product-by-id.param.dto';
 import { ProductResponseDto } from '../../application/dtos/product.response.dto';
 import { SearchProductsQueryDto } from '../../application/dtos/search-products.query.dto';
 import { SearchProductsResponseDto } from '../../application/dtos/search-products.response.dto';
@@ -71,11 +72,17 @@ export class ProductController {
     type: ProductResponseDto,
   })
   @ApiResponse({
+    status: 400,
+    description: 'Invalid UUID format',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Product not found',
   })
-  async findById(@Param('id') id: string): Promise<ProductResponseDto> {
-    this.logger.log(`Find by ID request: ${id}`);
-    return this.findProductByIdUseCase.execute(id);
+  async findById(
+    @Param() params: FindProductByIdParamDto,
+  ): Promise<ProductResponseDto> {
+    this.logger.log(`Find by ID request: ${params.id}`);
+    return this.findProductByIdUseCase.execute(params.id);
   }
 }

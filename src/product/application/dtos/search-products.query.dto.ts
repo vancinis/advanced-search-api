@@ -13,6 +13,7 @@ import {
   IsPositive,
   IsString,
   Max,
+  MaxLength,
   Min,
   Validate,
   ValidationArguments,
@@ -35,13 +36,32 @@ class IsValidGeoFilter implements ValidatorConstraintInterface {
   }
 }
 
+@ValidatorConstraint({ name: 'isValidPriceRange', async: false })
+class IsValidPriceRange implements ValidatorConstraintInterface {
+  validate(_value: any, args: ValidationArguments): boolean {
+    const object = args.object as { minPrice?: number; maxPrice?: number };
+    if (object.minPrice !== undefined && object.maxPrice !== undefined) {
+      return object.minPrice <= object.maxPrice;
+    }
+    return true;
+  }
+
+  defaultMessage() {
+    return 'minPrice must be less than or equal to maxPrice';
+  }
+}
+
 export class SearchProductsQueryDto {
   @ApiPropertyOptional({
     description: 'Text to search in product name and description',
     example: 'iPhone 15',
+    maxLength: 500,
   })
   @IsOptional()
   @IsString()
+  @MaxLength(500, {
+    message: 'Search text must not exceed 500 characters',
+  })
   text?: string;
 
   @ApiPropertyOptional({
@@ -86,6 +106,7 @@ export class SearchProductsQueryDto {
   @Type(() => Number)
   @IsNumber()
   @Min(0)
+  @Validate(IsValidPriceRange)
   maxPrice?: number;
 
   // --- Geo Location ---

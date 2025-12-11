@@ -32,7 +32,12 @@ export class ElasticsearchProductAdapter
       'http://localhost:9200',
     );
 
-    this.client = new Client({ node });
+    const apiKey = this.configService.get<string | undefined>(
+      'ELASTICSEARCH_API_KEY',
+      undefined,
+    );
+
+    this.client = new Client({ node, auth: apiKey ? { apiKey } : undefined });
     this.indexName = this.configService.get<string>(
       'ELASTICSEARCH_INDEX',
       'products',
