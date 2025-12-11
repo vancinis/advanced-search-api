@@ -37,9 +37,11 @@ export const PRODUCT_MAPPING: estypes.MappingTypeMapping = {
     },
     category: {
       type: 'keyword',
+      normalizer: 'lowercase_normalizer',
     },
     subcategories: {
       type: 'keyword',
+      normalizer: 'lowercase_normalizer',
     },
     price: {
       type: 'double',
@@ -61,6 +63,12 @@ export const PRODUCT_MAPPING: estypes.MappingTypeMapping = {
 
 export const PRODUCT_SETTINGS: estypes.IndicesIndexSettings = {
   analysis: {
+    normalizer: {
+      lowercase_normalizer: {
+        type: 'custom',
+        filter: ['lowercase', 'asciifolding'],
+      },
+    },
     analyzer: {
       autocomplete: {
         type: 'custom',

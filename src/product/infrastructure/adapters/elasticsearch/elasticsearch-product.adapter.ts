@@ -16,7 +16,7 @@ import {
   PRODUCT_SETTINGS,
   ProductDocument,
 } from './product.document';
-import { ProductMapper } from './product.mapper';
+import { ElasticsearchProductMapper } from './product.mapper';
 
 @Injectable()
 export class ElasticsearchProductAdapter
@@ -100,7 +100,7 @@ export class ElasticsearchProductAdapter
           : (response.hits.total?.value ?? 0);
 
       const products = hits.map((hit) =>
-        ProductMapper.toDomain(hit._source as ProductDocument),
+        ElasticsearchProductMapper.toDomain(hit._source as ProductDocument),
       );
 
       // Construir facets
@@ -144,7 +144,7 @@ export class ElasticsearchProductAdapter
         return null;
       }
 
-      return ProductMapper.toDomain(
+      return ElasticsearchProductMapper.toDomain(
         response.hits.hits[0]._source as ProductDocument,
       );
     } catch (error) {
@@ -186,7 +186,7 @@ export class ElasticsearchProductAdapter
 
   async index(product: Product): Promise<void> {
     try {
-      const document = ProductMapper.toDocument(product);
+      const document = ElasticsearchProductMapper.toDocument(product);
 
       await this.client.index({
         index: this.indexName,

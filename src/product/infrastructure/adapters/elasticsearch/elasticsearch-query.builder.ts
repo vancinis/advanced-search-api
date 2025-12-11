@@ -28,7 +28,9 @@ export class ElasticsearchQueryBuilder {
 
     if (filters.subcategories && filters.subcategories.length > 0) {
       filter.push({
-        terms: { subcategories: filters.subcategories },
+        terms: {
+          subcategories: filters.subcategories,
+        },
       });
     }
 

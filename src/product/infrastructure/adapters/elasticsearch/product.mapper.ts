@@ -2,7 +2,7 @@ import { ProductProps } from '../../../domain/contracts/product.props';
 import { Product } from '../../../domain/entities/product.entity';
 import { ProductDocument } from './product.document';
 
-export class ProductMapper {
+export class ElasticsearchProductMapper {
   static toDocument(product: Product): ProductDocument {
     return {
       id: product.id,

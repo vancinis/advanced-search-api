@@ -35,7 +35,12 @@ export class AutocompleteProductsUseCase {
       return cached;
     }
 
-    const result = await this.productSearchPort.autocomplete(query);
+    const normalizedQuery: AutocompleteQueryDto = {
+      ...query,
+      text: normalizedText,
+      limit: limit,
+    };
+    const result = await this.productSearchPort.autocomplete(normalizedQuery);
 
     await this.cachePort.set(cacheKey, result, this.CACHE_TTL);
 

@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Product } from '../../../domain/entities/product.entity';
 import { ProductNotFoundException } from '../../../domain/exceptions/product.exception';
 import { ProductRepositoryPort } from '../../../domain/ports/product-repository.port';
-import { ProductMapper } from './product.mapper';
+import { TypeOrmProductMapper } from './product.mapper';
 import { ProductOrmEntity } from './product.orm-entity';
 
 @Injectable()
@@ -25,10 +25,10 @@ export class TypeOrmProductRepository implements ProductRepositoryPort {
       });
 
       if (existing) {
-        ormEntity = ProductMapper.toOrmForUpdate(product, existing);
+        ormEntity = TypeOrmProductMapper.toOrmForUpdate(product, existing);
         this.logger.log(`Updating product with id: ${product.id}`);
       } else {
-        ormEntity = ProductMapper.toOrmForCreate(product);
+        ormEntity = TypeOrmProductMapper.toOrmForCreate(product);
         this.logger.log(`Creating new product: ${product.name}`);
       }
 
@@ -36,7 +36,7 @@ export class TypeOrmProductRepository implements ProductRepositoryPort {
 
       this.logger.log(`Product saved successfully with id: ${saved.id}`);
 
-      return ProductMapper.toDomain(saved);
+      return TypeOrmProductMapper.toDomain(saved);
     } catch (error) {
       this.logger.error(`Error saving product: ${error.message}`, error.stack);
       throw error;
@@ -56,7 +56,7 @@ export class TypeOrmProductRepository implements ProductRepositoryPort {
         return null;
       }
 
-      return ProductMapper.toDomain(ormEntity);
+      return TypeOrmProductMapper.toDomain(ormEntity);
     } catch (error) {
       this.logger.error(
         `Error finding product by id ${id}: ${error.message}`,
@@ -80,7 +80,7 @@ export class TypeOrmProductRepository implements ProductRepositoryPort {
         order: { createdAt: 'DESC' },
       });
 
-      return ProductMapper.toDomainMany(ormEntities);
+      return TypeOrmProductMapper.toDomainMany(ormEntities);
     } catch (error) {
       this.logger.error(
         `Error finding all products: ${error.message}`,
@@ -147,7 +147,7 @@ export class TypeOrmProductRepository implements ProductRepositoryPort {
         order: { createdAt: 'ASC' },
       });
 
-      return ProductMapper.toDomainMany(ormEntities);
+      return TypeOrmProductMapper.toDomainMany(ormEntities);
     } catch (error) {
       this.logger.error(
         `Error finding products for sync: ${error.message}`,
@@ -166,7 +166,7 @@ export class TypeOrmProductRepository implements ProductRepositoryPort {
         order: { createdAt: 'DESC' },
       });
 
-      return ProductMapper.toDomainMany(ormEntities);
+      return TypeOrmProductMapper.toDomainMany(ormEntities);
     } catch (error) {
       this.logger.error(
         `Error finding products by category: ${error.message}`,

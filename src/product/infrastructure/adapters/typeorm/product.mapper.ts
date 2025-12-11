@@ -2,7 +2,7 @@ import { ProductProps } from '../../../domain/contracts/product.props';
 import { Product } from '../../../domain/entities/product.entity';
 import { ProductOrmEntity } from './product.orm-entity';
 
-export class ProductMapper {
+export class TypeOrmProductMapper {
   static toDomain(ormEntity: ProductOrmEntity): Product {
     const props: ProductProps = {
       id: ormEntity.id,

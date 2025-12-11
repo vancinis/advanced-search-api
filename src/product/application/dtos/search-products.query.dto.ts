@@ -57,7 +57,8 @@ export class SearchProductsQueryDto {
   })
   @IsOptional()
   @Transform(({ value }) => {
-    if (typeof value === 'string') return [value];
+    if (typeof value === 'string') return value.split(',');
+
     return value;
   })
   @IsArray()
