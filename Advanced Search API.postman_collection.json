@@ -35,6 +35,33 @@
 			"name": "Products",
 			"item": [
 				{
+					"name": "Create product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Laptop HP Pavilion\",\n  \"description\": \"High-performance laptop with Intel i7 processor\",\n  \"category\": \"Electronics\",\n  \"subcategories\": [\"Laptops\", \"Computers\"],\n  \"price\": 999.99,\n  \"latitude\": 40.7128,\n  \"longitude\": -74.006\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						},
+						"description": "Create a new product and automatically index it in Elasticsearch. Returns 201 on success."
+					},
+					"response": []
+				},
+				{
 					"name": "Get Autocomplete suggestions",
 					"request": {
 						"method": "GET",

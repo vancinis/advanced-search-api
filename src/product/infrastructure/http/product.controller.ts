@@ -1,12 +1,22 @@
-import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AutocompleteQueryDto } from '../../application/dtos/autocomplete.query.dto';
 import { AutocompleteResponseDto } from '../../application/dtos/autocomplete.response.dto';
+import { CreateProductDto } from '../../application/dtos/create-product.dto';
 import { FindProductByIdParamDto } from '../../application/dtos/find-product-by-id.param.dto';
 import { ProductResponseDto } from '../../application/dtos/product.response.dto';
 import { SearchProductsQueryDto } from '../../application/dtos/search-products.query.dto';
 import { SearchProductsResponseDto } from '../../application/dtos/search-products.response.dto';
 import { AutocompleteProductsUseCase } from '../../application/use-cases/autocomplete-products.usecase';
+import { CreateProductUseCase } from '../../application/use-cases/create-product.usecase';
 import { FindProductByIdUseCase } from '../../application/use-cases/find-product-by-id.usecase';
 import { SearchProductsUseCase } from '../../application/use-cases/search-products.usecase';
 
@@ -19,6 +29,7 @@ export class ProductController {
     private readonly searchProductsUseCase: SearchProductsUseCase,
     private readonly autocompleteProductsUseCase: AutocompleteProductsUseCase,
     private readonly findProductByIdUseCase: FindProductByIdUseCase,
+    private readonly createProductUseCase: CreateProductUseCase,
   ) {}
 
   @Get()
@@ -37,6 +48,32 @@ export class ProductController {
   ): Promise<SearchProductsResponseDto> {
     this.logger.log(`Search request: ${JSON.stringify(query)}`);
     return this.searchProductsUseCase.execute(query);
+  }
+
+  @Post()
+  @ApiOperation({
+    summary: 'Create a new product',
+    description:
+      'Create a new product and automatically index it in Elasticsearch. If indexing fails, the product will be rolled back from the database.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Product created successfully',
+    type: ProductResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid input data',
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Failed to index product in Elasticsearch',
+  })
+  async create(
+    @Body() createProductDto: CreateProductDto,
+  ): Promise<ProductResponseDto> {
+    this.logger.log(`Create product request: ${createProductDto.name}`);
+    return this.createProductUseCase.execute(createProductDto);
   }
 
   @Get('autocomplete')
