@@ -64,6 +64,7 @@ curl "https://advanced-search-api.onrender.com/products/autocomplete?text=lapt"
 - 🏗️ **Hexagonal Architecture**: Clear separation between domain, application, and infrastructure
 - 🛡️ **Robust Validation**: DTOs with class-validator for automatic validation
 - 🔐 **Error Handling**: Global custom exception filters
+- 🔒 **Security**: Rate limiting (100 req/min) and Helmet protection against common vulnerabilities
 - 📝 **Logging**: Structured logging system with NestJS Logger
 - 🚀 **Smart Caching**: Redis to optimize frequent queries
 - 🌍 **Geospatial Search**: Filtering by coordinates with customizable radius
@@ -112,6 +113,8 @@ src/
 | **Cache**         | Redis           | 8.4.0   | Autocomplete caching              |
 | **Validation**    | class-validator | 0.14.3  | DTO validation                    |
 | **Documentation** | Swagger/OpenAPI | 11.2.3  | API documentation                 |
+| **Security**      | Helmet          | 8.1.0   | HTTP headers security             |
+| **Rate Limiting** | Throttler       | 6.2.1   | API abuse protection              |
 | **Testing**       | Jest            | 30.0.0  | Testing framework                 |
 | **Containers**    | Docker          | Latest  | Containerization                  |
 | **Visualization** | Kibana          | 9.2.2   | Elasticsearch visualization       |
@@ -745,7 +748,47 @@ docker-compose logs -f redis
 
 ## 🎓 Featured Technical Characteristics
 
-### 1. Fuzzy Search
+### 1. Security & Protection
+
+**Rate Limiting:**
+
+- 100 requests per minute per IP
+- Prevents DoS attacks and API abuse
+- Returns 429 status when limit exceeded
+
+**Helmet Security:**
+
+- Content Security Policy (CSP)
+- XSS protection
+- MIME type sniffing prevention
+- Clickjacking protection
+- HTTP Strict Transport Security
+
+```typescript
+// Rate limiting configuration
+ThrottlerModule.forRoot([
+  {
+    ttl: 60000, // 60 seconds
+    limit: 100, // Max requests per window
+  },
+]);
+
+// Helmet security headers
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+        scriptSrc: ["'self'"],
+      },
+    },
+  }),
+);
+```
+
+### 2. Fuzzy Search
 
 The system implements fuzzy search to tolerate typos:
 
@@ -758,7 +801,7 @@ The system implements fuzzy search to tolerate typos:
 }
 ```
 
-### 2. Field Boosting
+### 3. Field Boosting
 
 Product names have greater weight in relevance:
 
@@ -766,7 +809,7 @@ Product names have greater weight in relevance:
 fields: ['name^2', 'description']; // name has 2x boost
 ```
 
-### 3. Geolocation
+### 4. Geolocation
 
 Search by geographic proximity:
 
@@ -779,11 +822,11 @@ Search by geographic proximity:
 }
 ```
 
-### 4. Smart Caching
+### 5. Smart Caching
 
 Redis caches autocomplete with a 5-minute TTL to optimize performance.
 
-### 5. Faceted Search
+### 6. Faceted Search
 
 Dynamic aggregations that allow progressive filtering.
 
