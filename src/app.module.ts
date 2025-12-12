@@ -10,7 +10,6 @@ import { ProductModule } from './product/product.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    // Rate limiting configuration
     ThrottlerModule.forRoot([
       {
         ttl: 60000, // Time window: 60 seconds
