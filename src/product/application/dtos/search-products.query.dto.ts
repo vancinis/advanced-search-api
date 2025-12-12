@@ -54,7 +54,7 @@ class IsValidPriceRange implements ValidatorConstraintInterface {
 export class SearchProductsQueryDto {
   @ApiPropertyOptional({
     description: 'Text to search in product name and description',
-    example: 'iPhone 15',
+    example: 'Laptop',
     maxLength: 500,
   })
   @IsOptional()
@@ -73,8 +73,9 @@ export class SearchProductsQueryDto {
   category?: string;
 
   @ApiPropertyOptional({
-    description: 'Subcategories to filter products',
-    example: ['Smartphones', 'Apple'],
+    description: 'Subcategories to filter products (comma-separated)',
+    example: 'Cameras,Laptops',
+    type: String,
   })
   @IsOptional()
   @Transform(({ value }) => {
