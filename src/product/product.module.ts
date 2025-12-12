@@ -6,6 +6,7 @@ import { PRODUCT_REPOSITORY_PORT } from './domain/ports/product-repository.port'
 import { PRODUCT_SEARCH_PORT } from './domain/ports/product-search.port';
 
 import { AutocompleteProductsUseCase } from './application/use-cases/autocomplete-products.usecase';
+import { CreateProductUseCase } from './application/use-cases/create-product.usecase';
 import { FindProductByIdUseCase } from './application/use-cases/find-product-by-id.usecase';
 import { SearchProductsUseCase } from './application/use-cases/search-products.usecase';
 
@@ -22,6 +23,7 @@ import { ProductController } from './infrastructure/http/product.controller';
     SearchProductsUseCase,
     AutocompleteProductsUseCase,
     FindProductByIdUseCase,
+    CreateProductUseCase,
     // Elasticsearch Adapter implements ProductSearchPort
     {
       provide: PRODUCT_SEARCH_PORT,
